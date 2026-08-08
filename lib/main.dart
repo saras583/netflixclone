@@ -19,7 +19,7 @@ class NetfixApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: const BottomNavigationScreen(),
+      home: const MainNavigation(),
     );
   }
 }

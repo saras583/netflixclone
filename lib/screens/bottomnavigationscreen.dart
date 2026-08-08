@@ -1,77 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:netfixclone_app/screens/homescreen.dart';
+import 'package:netfixclone_app/screens/newHotScreen.dart';
+import 'package:netfixclone_app/screens/profileScreen.dart';
+import 'package:netfixclone_app/screens/searchscreen.dart';
 
-class BottomNavigationScreen extends StatefulWidget {
-  const BottomNavigationScreen({super.key});
+
+
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
 
   @override
-  State<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
+  State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int _currentIndex = 0;
+class _MainNavigationState extends State<MainNavigation> {
+  int currentIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    _HomeScreen(),
-    Center(child: Text('Search', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Downloads', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Profile', style: TextStyle(fontSize: 24))),
+  final List<Widget> screens = [
+     Homescreen(),
+     NewHotScreen(),
+     SearchScreen(),
+     ProfileScreen(),
+  
   ];
-
-  static const List<BottomNavigationBarItem> _items = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.search),
-      label: 'Search',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.download),
-      label: 'Downloads',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'Profile',
-    ),
-  ];
-
-  void _onTabSelected(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Netfix Clone'),
-        centerTitle: true,
-      ),
-      body: _pages[_currentIndex],
+      body: screens[currentIndex],
+
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: _items,
-        onTap: _onTabSelected,
-        selectedItemColor: Colors.redAccent,
-        unselectedItemColor: Colors.white70,
-        backgroundColor: Colors.black,
+        currentIndex: currentIndex,
+
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+
         type: BottomNavigationBarType.fixed,
-      ),
-    );
-  }
-}
 
-class _HomeScreen extends StatelessWidget {
-  const _HomeScreen({super.key});
+        backgroundColor: Colors.black,
 
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Home Screen',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        selectedItemColor: Colors.white,
+
+        unselectedItemColor: Colors.grey,
+
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_fire_department_outlined),
+            activeIcon: Icon(Icons.local_fire_department),
+            label: 'New & Hot',
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
