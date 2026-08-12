@@ -6,7 +6,7 @@ class Tmdbservies {
 
 
   final Dio dio = Dio(BaseOptions(
-    baseUrl: Apiconstant.baseUrl
+    baseUrl: ApiConstant.baseUrl
   ));
 
   
@@ -15,9 +15,9 @@ class Tmdbservies {
       
 
      final response = await dio.get(
-      Apiconstant.popularMovie,
+      ApiConstant.popularMovie,
       queryParameters:{
-        'api_key':Apiconstant.apiKey,
+        'api_key':ApiConstant.apiKey,
         'language': 'en-Us',
         'page':1,
       } 
@@ -31,6 +31,26 @@ class Tmdbservies {
   
     }catch(e){
       print('api error $e');
+      rethrow;
+    }
+  }
+
+  Future<List<MovieModel>> searchMovies(String query)async{
+    try{
+      final response = await dio.get(
+        ApiConstant.searchMovie,
+        queryParameters: {
+           'api_key': ApiConstant.apiKey,
+        'query': query,
+        'language': 'en-US',
+        'page': 1,
+        }
+      );
+
+      final List results = response.data['results'];
+      return results.map((movie)=> MovieModel.fromJson(movie)).toList();
+    }catch(e){
+      print("$e");
       rethrow;
     }
   }

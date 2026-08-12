@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netfixclone_app/screens/homescreen.dart';
-import 'package:netfixclone_app/screens/newHotScreen.dart';
-import 'package:netfixclone_app/screens/profileScreen.dart';
+import 'package:netfixclone_app/screens/new_HotScreen.dart';
+import 'package:netfixclone_app/screens/profile_Screen.dart';
 import 'package:netfixclone_app/screens/searchscreen.dart';
 
 
