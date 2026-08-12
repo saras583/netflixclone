@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:netfixclone_app/core/constants/apiconstant.dart';
 import 'package:netfixclone_app/models/movie_model.dart';
 
@@ -6,7 +7,8 @@ class Tmdbservies {
 
 
   final Dio dio = Dio(BaseOptions(
-    baseUrl: ApiConstant.baseUrl
+    baseUrl: ApiConstant.baseUrl,
+   
   ));
 
   
@@ -52,6 +54,28 @@ class Tmdbservies {
     }catch(e){
       print("$e");
       rethrow;
+    }
+  }
+  Future<List<MovieModel>> getTrendingMovies()async{
+    try{
+      final response = await dio.get(
+        ApiConstant.trendingMovies,
+        queryParameters: {
+          'api_key': ApiConstant.apiKey
+          
+        }
+        
+      );
+      debugPrint('Trending status: ${response.statusCode}');
+    debugPrint('Trending response: ${response.data}');
+
+      final List results = response.data['results'];
+
+      return results.map((movie)=> MovieModel.fromJson(movie)).toList();
+    }
+    catch(e){
+      debugPrint('trending movies error: $e');
+      return[];
     }
   }
 }

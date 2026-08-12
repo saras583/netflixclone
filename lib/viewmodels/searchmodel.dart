@@ -1,33 +1,59 @@
 import 'package:flutter/foundation.dart';
-import 'package:netfixclone_app/models/movie_model.dart';
 import 'package:netfixclone_app/services/tmdbservies.dart';
 
-class Searchmodel extends ChangeNotifier{
+import '../models/movie_model.dart';
 
-  final Tmdbservies tmdbservies = Tmdbservies();
+class SearchViewModel extends ChangeNotifier {
+  final Tmdbservies _service = Tmdbservies();
 
-  List<MovieModel> searchResult = [];
+  List<MovieModel> _searchResults = [];
 
- bool isloadind = false;
- 
- String? errorMessage;
+  bool _isLoading = false;
 
+  String? _errorMessage;
 
- Future<void> searchMovie(String query)async{
-  if(query.trim().isEmpty){
-    searchResult = [];
+  List<MovieModel> get searchResults => _searchResults;
+
+  bool get isLoading => _isLoading;
+
+  String? get errorMessage => _errorMessage;
+
+  Future<void> searchMovies(String query) async {
+    if (query.trim().isEmpty) {
+      _searchResults = [];
+      _errorMessage = null;
+
+      notifyListeners();
+      return;
+    }
+
+    _isLoading = true;
+    _errorMessage = null;
+
     notifyListeners();
-    return;
+
+    try {
+      _searchResults = await _service.searchMovies(query);
+
+      debugPrint(
+        'Search results: ${_searchResults.length}',
+      );
+    } catch (e) {
+      debugPrint('Search error: $e');
+
+      _searchResults = [];
+      _errorMessage = 'Failed to search movies';
+    }
+
+    _isLoading = false;
+
+    notifyListeners();
   }
-  try{
-    isloadind = true;
-    errorMessage = null;
-    notifyListeners();
 
-    searchResult = await tmdbservies.searchMovies(query.trim(),);
-  }catch(e){
-    errorMessage = 'somthing is wrong';
+  void clearSearch() {
+    _searchResults = [];
+    _errorMessage = null;
+
     notifyListeners();
   }
- }
 }

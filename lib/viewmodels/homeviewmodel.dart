@@ -4,34 +4,48 @@ import 'package:netfixclone_app/services/tmdbservies.dart';
 
 class Homeviewmodel extends ChangeNotifier{
   
-  final Tmdbservies service;
+  final Tmdbservies _servies = Tmdbservies();
 
-  Homeviewmodel(this.service);
+ 
 
-  List<MovieModel> popularMovie = [];
+  List<MovieModel> _popularMovie = [];
+  List<MovieModel> trendingMovies = [];
 
-  bool isloading = false;
+  bool _isLoading = false;
 
-  String? errorMessage;
+  String? _errorMessage;
+   List<MovieModel> get popularMovies => _popularMovie;
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
 
-  Future<void> fetchPopulorMovies()async{
+  Future<void> getPopulorMovies()async{
      
-     isloading= true;
-     errorMessage = null;
+     _isLoading= true;
+     _errorMessage = null;
      notifyListeners();
 
      try{
-      popularMovie = await service.getPopularMovies();
+      _popularMovie = await _servies.getPopularMovies();
      }catch(e){
-      errorMessage = null;
+      _errorMessage = toString();
      }
-     isloading = false;
+     _isLoading = false;
 
      notifyListeners();
 
 
 
   }
+  Future<void> getTrendingMovies() async {
+  try {
+    trendingMovies = await _servies.getTrendingMovies();
+
+    notifyListeners();
+  } catch (e) {
+    debugPrint('Trending ViewModel error: $e');
+  }
+}
+  
 
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:netfixclone_app/models/movie_model.dart';
 import 'package:netfixclone_app/screens/homescreen.dart';
 import 'package:netfixclone_app/screens/new_HotScreen.dart';
 import 'package:netfixclone_app/screens/profile_Screen.dart';
